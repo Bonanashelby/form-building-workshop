@@ -65,43 +65,57 @@ articleView.setTeasers = function() {
     $(this).hide();
   });
 };
-
+// initial display of the new article page
 articleView.initNewArticlePage = function() {
-  // TODO: Ensure the main .tab-content area is revealed. We might add more tabs later.
+  // DONE: Ensure the main .tab-content area is revealed. We might add more tabs later.
+  $('.tab-content').show();
 
 
-  // TODO: The new articles we create will be copy/pasted into our source data file.
-  // Set up this "export" functionality. We can hide it for now, and show it once we have data to export.
-
+  // DONE: The new articles we create will be copy/pasted into our source data file.
+  // We will eventually set up this "export" functionality. We can hide it for now, and show it once we have data to export.
+  $('#export-field').hide();
   $('#article-json').on('focus', function(){
+    // this.select selects the entire json link at the bottom of our article creation page
     this.select();
   });
 
-  // TODO: Add an event handler to update the preview and the export field if any inputs change.
-
+  // DONE: Add an event handler to update the preview and the export field if any inputs change.
+  $('#new-form').on('change', articleView.create);
 };
-
+// basically the form - logic and functionality of new article page
 articleView.create = function() {
-  // TODO: Set up a var to hold the new article we are creating.
-  // Clear out the #articles element, so we can put in the updated preview
+  // DONE: Set up a var to hold the new article we are creating.
+  // Empty out the #articles element, so we can put in the updated preview
+  var newArticle;
+  $('#articles').empty();
 
+  // DONE: Instantiate (using the obj constructor) an article based on what's in the form fields:
+  newArticle = new Article({
+    title: $('#article-title').val(),
+    author: $('#article-author').val(),
+    authorUrl: $('#article-author-url').val(),
+    category: $('#article-category').val(),
+    body: $('#article-body').val(),
+    // ifChecked ? new Date : null
+    publishedOn: $('#article-published:checked').length ? new Date() : null
+  });
+  console.log(newArticle);
 
-  // TODO: Instantiate an article based on what's in the form fields:
-
-
-  // TODO: Use our interface to the Handblebars template to put this new article into the DOM:
-
+  // DONE: Use our interface (API) to the Handblebars template to put this new article into the DOM:
+  $('#articles').append(newArticle.toHtml());
 
   // TODO: Activate the highlighting of any code blocks:
   $('pre code').each(function(i, block) {
-
+    hljs.highlightBlock(block);
   });
 
   // TODO: Show our export field, and export the new article as JSON, so it's ready to copy/paste into blogArticles.js:
+  $('#export-field').show();
+  $('#article-json').val(JSON.stringify(newArticle) + ',');
 
 };
 
-
+// methods to do the initial presentation of ea of the two documents -user interaction changes those displays
 articleView.initIndexPage = function() {
 
   rawData.sort(function(a,b) {
@@ -115,7 +129,7 @@ articleView.initIndexPage = function() {
   articles.forEach(function(a){
     $('#articles').append(a.toHtml())
   });
-  
+
   articleView.populateFilters();
   articleView.handleCategoryFilter();
   articleView.handleAuthorFilter();

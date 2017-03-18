@@ -1,6 +1,7 @@
 'use strict';
 
 var rawData = [
+  {"author":"duckie","authorUrl":"duck.truck","title":"WTF Rubber Duck","category":"quackalicious","body":"<p>Why do we have rubber ducks? I like the real kind.</p>\n","publishedOn":"2017-03-18T00:36:23.016Z","daysAgo":1,"publishStatus":"published 1 days ago"},
   {
     title:       'Bacon Ipsum',
     category:    'food',
